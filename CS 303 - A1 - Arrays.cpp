@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// Display the menu options to the user
 void displayMenu() {
     cout << "\nMenu:\n"
          << "1. Check if an integer exists\n"
@@ -16,19 +17,21 @@ void displayMenu() {
 }
 
 int main() {
+    // Initialize the dynamic array
     DynamicArray arr;
     initializeArray(arr);
 
-    // Always use "A1input.txt" as the input file
+    // Use the fixed input file "A1input.txt"
     string filename = "A1input.txt";
 
+    // Read integers from the file into the array
     if (!readFromFile(arr, filename)) {
         cerr << "Error opening file or file is empty.\n";
         freeArray(arr);
         return 1;
     }
 
-    // Write initial array to output.txt
+    // Write the initial array to "output.txt"
     ofstream outFile("output.txt");
     if (outFile.is_open()) {
         outFile << "Initial array after reading from file:\n";
@@ -42,12 +45,13 @@ int main() {
     }
 
     int choice;
-    int indexInput, oldValue, newValue; // Declare variables
+    int indexInput, oldValue, newValue; // Variables for various operations
 
     do {
         displayMenu();
         cin >> choice;
 
+        // Validate numeric input
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -56,7 +60,7 @@ int main() {
         }
 
         switch (choice) {
-            case 1: {
+            case 1: { // Check if an integer exists in the array
                 int searchValue;
                 cout << "Enter integer to find: ";
                 cin >> searchValue;
@@ -67,12 +71,11 @@ int main() {
                     cout << "Integer not found.\n";
                 break;
             }
-            case 2: {
+            case 2: { // Modify an integer at a given index
                 cout << "Enter index to modify: ";
                 cin >> indexInput;
                 cout << "Enter new value: ";
                 cin >> newValue;
-
                 try {
                     modifyInteger(arr, static_cast<size_t>(indexInput), newValue, oldValue);
                     cout << "Old value: " << oldValue << ", New value: " << newValue << endl;
@@ -84,7 +87,7 @@ int main() {
                 }
                 break;
             }
-            case 3: {
+            case 3: { // Add a new integer to the end of the array
                 cout << "Enter integer to add: ";
                 cin >> newValue;
                 try {
@@ -96,7 +99,7 @@ int main() {
                 }
                 break;
             }
-            case 4: {
+            case 4: { // Remove an integer at a specified index
                 cout << "Enter index to remove: ";
                 cin >> indexInput;
                 try {
@@ -117,6 +120,7 @@ int main() {
         }
     } while (choice != 5);
 
+    // Free dynamically allocated memory
     freeArray(arr);
     return 0;
 }
